@@ -56,6 +56,12 @@ open class MMLoadingButton: UIButton {
         self.setUp()
     }
     
+    override open func layoutSubviews() {
+        super.layoutSubviews()
+        
+        self.setUp()
+    }
+    
     open override func awakeFromNib() {
         let screenWidth = UIScreen.main.bounds.size.width
         self.superview?.addSubview(errorLabel)
