@@ -43,6 +43,9 @@ open class MMLoadingButton: UIButton {
     fileprivate lazy var errorLabel:UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
+        label.numberOfLines = 0
+        label.lineBreakMode = .byWordWrapping
+        label.minimumScaleFactor = 0.5
         return label
     }()
     
@@ -65,11 +68,11 @@ open class MMLoadingButton: UIButton {
     open override func awakeFromNib() {
         let screenWidth = UIScreen.main.bounds.size.width
         self.superview?.addSubview(errorLabel)
-        let height = NSLayoutConstraint.init(item: errorLabel, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1.0, constant: 30)
+//        let height = NSLayoutConstraint.init(item: errorLabel, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1.0, constant: 30)
         let width = NSLayoutConstraint(item: errorLabel, attribute: .width, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1.0, constant: screenWidth-40)
         errTopConstraint = NSLayoutConstraint.init(item: errorLabel, attribute: .top, relatedBy: .equal, toItem: self, attribute: .bottom, multiplier: 1.0, constant: errLabelMargin)
         let center = NSLayoutConstraint.init(item: errorLabel, attribute: .centerX, relatedBy: .equal, toItem: self, attribute: .centerX, multiplier: 1.0, constant: 0.0)
-        self.superview?.addConstraints([width,center,errTopConstraint,height])
+        self.superview?.addConstraints([width,center,errTopConstraint])
         errorLabel.clipsToBounds = false
         errorLabel.backgroundColor = UIColor.clear
         errorLabel.textAlignment = .center
@@ -114,8 +117,9 @@ open class MMLoadingButton: UIButton {
                 c()
             }
         }
-        self.showErrorLabel(true)
         self.errorLabel.text = msg
+        self.errorLabel.sizeToFit()
+        self.showErrorLabel(true)
     }
     
     open func stopLoading(_ result:Bool,completed:(() -> Void)?) {
